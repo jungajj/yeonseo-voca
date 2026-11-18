@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eef3ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>연서의 4-2 단원평가 퀴즈 · 사회·과학</title>
+<style>
+  :root{
+    --bg:#f2f6ff; --ink:#1b2540; --sub:#5d6a88; --line:#e2e9f8;
+    --card:#ffffff; --blue:#3b6ef5; --blue-soft:#e9f0ff;
+    --green:#0fa968; --green-soft:#e3f8ee;
+    --gold:#f7b731; --gold-soft:#fff6df;
+    --red:#e8484b; --red-soft:#ffeceb;
+    --radius:22px;
+    --safe-b: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Apple SD Gothic Neo","Pretendard","Malgun Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(700px 420px at 6% -6%, #dbe7ff 0%, rgba(219,231,255,0) 62%),
+      radial-gradient(620px 420px at 100% 2%, #dff7ec 0%, rgba(223,247,236,0) 60%),
+      linear-gradient(180deg,#f7faff 0%, var(--bg) 100%);
+    background-attachment:fixed;
+    min-height:100dvh;
+    -webkit-text-size-adjust:100%;
+  }
+  .app{max-width:540px; margin:0 auto; padding:18px 16px calc(28px + var(--safe-b));}
+  .screen{display:none;}
+  .screen.active{display:block; animation:fade .22s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+  button{font-family:inherit; color:inherit; cursor:pointer; border:0; background:none;}
+  button:disabled{cursor:default;}
+
+  /* header */
+  .hero{padding:10px 4px 18px; text-align:left;}
+  .hero .badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; font-weight:800; color:#3b6ef5;
+    background:#e6eeff; padding:7px 12px; border-radius:999px; letter-spacing:-.2px;
+  }
+  .hero h1{
+    margin:12px 0 6px; font-size:25px; line-height:1.28; letter-spacing:-.8px; font-weight:900;
+  }
+  .hero p{margin:0; color:var(--sub); font-size:14px; line-height:1.55;}
+
+  /* panels */
+  .panel{
+    background:var(--card); border-radius:var(--radius); padding:18px 16px 16px;
+    box-shadow:0 8px 26px rgba(41,73,152,.08), 0 1px 0 rgba(255,255,255,.9) inset;
+    border:1px solid rgba(255,255,255,.7);
+    margin-bottom:14px;
+  }
+  .panel .step{display:flex; align-items:center; gap:9px; margin-bottom:12px;}
+  .num{
+    width:24px; height:24px; flex:0 0 24px; border-radius:8px;
+    background:var(--blue-soft); color:var(--blue);
+    font-size:13px; font-weight:900; display:grid; place-items:center;
+  }
+  .step h2{margin:0; font-size:16px; letter-spacing:-.4px; font-weight:900;}
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    min-height:48px; padding:10px 14px; border-radius:15px;
+    border:2px solid var(--line); background:#fbfcff;
+    font-size:14.5px; font-weight:800; letter-spacing:-.3px; color:#41506f;
+    display:inline-flex; align-items:center; gap:7px; transition:transform .08s ease, background .15s, border-color .15s;
+  }
+  .chip small{font-size:11.5px; font-weight:700; color:var(--sub);}
+  .chip:active{transform:scale(.97);}
+  .chip[aria-pressed="true"]{
+    background:linear-gradient(180deg,#4b7bf8,#3b6ef5); border-color:#3b6ef5; color:#fff;
+    box-shadow:0 6px 16px rgba(59,110,245,.28);
+  }
+  .chip[aria-pressed="true"] small{color:#dbe6ff;}
+  .chip.wide{flex:1 1 100%; justify-content:flex-start;}
+  .selinfo{
+    margin-top:12px; padding:11px 13px; border-radius:13px; background:#f4f7ff;
+    font-size:13.5px; color:#41506f; line-height:1.5; font-weight:700;
+  }
+  .selinfo b{color:#2b52b8;}
+  .bestline{
+    margin-top:10px; font-size:13px; font-weight:800; color:#8a6a12;
+    background:var(--gold-soft); border-radius:12px; padding:10px 12px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .bigwrap{position:sticky; bottom:calc(8px + var(--safe-b)); padding-top:6px; z-index:5;}
+  .btn{
+    width:100%; min-height:58px; border-radius:18px; font-size:17px; font-weight:900; letter-spacing:-.3px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:linear-gradient(180deg,#4b7bf8,#3565ea); color:#fff;
+    box-shadow:0 10px 24px rgba(53,101,234,.30);
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn.ghost{
+    background:#fff; color:#2b52b8; border:2px solid #d7e3ff; box-shadow:none;
+  }
+  .btn.soft{background:#eef3ff; color:#2b52b8; box-shadow:none; border:0;}
+  .btn.gold{background:linear-gradient(180deg,#ffc94d,#f5ac16); color:#4a3200; box-shadow:0 10px 22px rgba(245,172,22,.3);}
+  .btn[disabled]{opacity:.45;}
+  .foot{text-align:center; color:#8b97b1; font-size:11.5px; line-height:1.6; margin-top:12px;}
+
+  /* quiz */
+  .qtop{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:2px 2px 10px;}
+  .qtop .quit{
+    min-height:40px; padding:8px 12px; border-radius:12px; background:#fff;
+    border:1.5px solid var(--line); font-size:13px; font-weight:800; color:#5d6a88;
+  }
+  .combo{
+    min-height:36px; padding:7px 12px; border-radius:999px; font-size:13px; font-weight:900;
+    background:#fff3e0; color:#a35c00; display:inline-flex; align-items:center; gap:5px;
+    border:1.5px solid #ffe0b2;
+  }
+  .combo.off{opacity:0;}
+  .pbar{height:12px; border-radius:999px; background:#e6ecfa; overflow:hidden; margin-bottom:6px;}
+  .pbar > i{
+    display:block; height:100%; width:0%;
+    background:linear-gradient(90deg,#4b7bf8,#5ed0a4); border-radius:999px;
+    transition:width .3s ease;
+  }
+  .counter{display:flex; justify-content:space-between; font-size:12.5px; font-weight:800; color:#7c89a5; padding:0 3px 14px;}
+
+  .qcard{
+    background:#fff; border-radius:var(--radius); padding:20px 18px 18px;
+    box-shadow:0 10px 30px rgba(41,73,152,.09); border:1px solid rgba(255,255,255,.8);
+  }
+  .tags{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
+  .tag{
+    font-size:11.5px; font-weight:900; padding:6px 10px; border-radius:999px;
+    background:#eef3ff; color:#3559b8; letter-spacing:-.2px;
+  }
+  .tag.type{background:#eafaf1; color:#0a7c4d;}
+  .tag.type.ox{background:#fff3e3; color:#9a5b00;}
+  .tag.type.short{background:#f4ecff; color:#6b38b8;}
+  .qtext{
+    font-size:19.5px; font-weight:900; line-height:1.52; letter-spacing:-.5px; margin:0 0 18px;
+    word-break:keep-all;
+  }
+  .opts{display:flex; flex-direction:column; gap:10px;}
+  .opt{
+    width:100%; min-height:58px; text-align:left; padding:13px 14px; border-radius:16px;
+    border:2px solid #e6ecfa; background:#fbfcff; font-size:15.5px; font-weight:700;
+    display:flex; align-items:flex-start; gap:11px; line-height:1.45; letter-spacing:-.3px;
+    transition:background .15s, border-color .15s, transform .08s;
+  }
+  .opt:active{transform:scale(.99);}
+  .opt .mk{
+    flex:0 0 26px; width:26px; height:26px; border-radius:9px; background:#eef3ff; color:#3559b8;
+    font-size:13px; font-weight:900; display:grid; place-items:center; margin-top:1px;
+  }
+  .opt.correct{border-color:#34c98a; background:var(--green-soft);}
+  .opt.correct .mk{background:#34c98a; color:#fff;}
+  .opt.wrong{border-color:#f08a8c; background:var(--red-soft);}
+  .opt.wrong .mk{background:#e8484b; color:#fff;}
+  .opt.dim{opacity:.5;}
+  .opt[disabled]{opacity:.75;}
+  .opt.correct[disabled], .opt.wrong[disabled]{opacity:1;}
+
+  .oxrow{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .oxbtn{
+    min-height:104px; border-radius:20px; border:2px solid #e6ecfa; background:#fbfcff;
+    font-size:40px; font-weight:900; display:grid; place-items:center; gap:2px;
+  }
+  .oxbtn span{font-size:13px; font-weight:900; color:#7c89a5;}
+  .oxbtn.correct{border-color:#34c98a; background:var(--green-soft);}
+  .oxbtn.wrong{border-color:#f08a8c; background:var(--red-soft);}
+  .oxbtn.dim{opacity:.5;}
+
+  .shortwrap{display:flex; flex-direction:column; gap:10px;}
+  .shortwrap input{
+    width:100%; min-height:58px; border-radius:16px; border:2px solid #dfe7f8; background:#fbfcff;
+    padding:0 16px; font-size:17px; font-weight:800; color:var(--ink); font-family:inherit;
+    outline:none;
+  }
+  .shortwrap input:focus{border-color:#7ea2ff; background:#fff;}
+  .shortwrap input:disabled{opacity:.85;}
+  .hintbox{
+    display:none; font-size:13.5px; font-weight:700; color:#6b4a00; background:var(--gold-soft);
+    border-radius:13px; padding:11px 13px; line-height:1.5;
+  }
+  .hintbox.show{display:block;}
+  .minibtn{
+    align-self:flex-start; min-height:40px; padding:8px 13px; border-radius:12px;
+    background:#fff8e6; color:#8a6200; font-size:13px; font-weight:900; border:1.5px solid #ffe4a8;
+  }
+
+  .feedback{margin-top:16px; border-radius:18px; padding:15px 15px 16px; display:none;}
+  .feedback.show{display:block; animation:fade .2s ease;}
+  .feedback.ok{background:linear-gradient(180deg,#eafaf2,#e1f7ec); border:1.5px solid #b6ecd0;}
+  .feedback.no{background:linear-gradient(180deg,#fff1f1,#ffe9e9); border:1.5px solid #ffc9c9;}
+  .fbhead{display:flex; align-items:center; gap:8px; font-size:16.5px; font-weight:900; letter-spacing:-.4px;}
+  .feedback.ok .fbhead{color:#0a7c4d;}
+  .feedback.no .fbhead{color:#b32b2e;}
+  .fbsub{margin-top:7px; font-size:14px; font-weight:800; color:#33405e; line-height:1.5;}
+  .fbsub b{color:#0a7c4d;}
+  .feedback.no .fbsub b{color:#b32b2e;}
+  .ex{
+    margin-top:10px; background:rgba(255,255,255,.85); border-radius:13px; padding:12px 13px;
+    font-size:14px; font-weight:700; color:#3c4a68; line-height:1.62; word-break:keep-all;
+  }
+  .ex .lab{display:block; font-size:11.5px; font-weight:900; color:#7c89a5; margin-bottom:5px; letter-spacing:.2px;}
+  .nextwrap{margin-top:14px;}
+
+  /* result */
+  .rcard{
+    background:#fff; border-radius:26px; padding:24px 18px 20px; text-align:center;
+    box-shadow:0 12px 34px rgba(41,73,152,.10); border:1px solid rgba(255,255,255,.8);
+  }
+  .rstars{font-size:30px; letter-spacing:3px; line-height:1; color:#f5b21a; margin-bottom:6px;}
+  .rscore{font-size:46px; font-weight:900; letter-spacing:-2px; line-height:1.05; margin:6px 0 2px;}
+  .rscore small{font-size:19px; font-weight:900; color:#8b97b1; letter-spacing:-.5px;}
+  .rpct{font-size:14px; font-weight:800; color:var(--sub);}
+  .rmsg{
+    margin:16px auto 0; max-width:420px; font-size:16px; font-weight:900; line-height:1.5;
+    letter-spacing:-.4px; color:#24365e; background:#f4f8ff; border-radius:16px; padding:14px;
+    word-break:keep-all;
+  }
+  .rbest{
+    margin-top:12px; display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:900;
+    color:#8a6a12; background:var(--gold-soft); border-radius:999px; padding:9px 14px;
+  }
+  .rbest.new{color:#a25b00; background:#fff0d6; animation:pop .4s ease;}
+  @keyframes pop{0%{transform:scale(.9);} 60%{transform:scale(1.06);} 100%{transform:scale(1);}}
+  .rstats{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;}
+  .stat{background:#f7f9ff; border-radius:15px; padding:12px 10px;}
+  .stat b{display:block; font-size:19px; font-weight:900; letter-spacing:-.5px;}
+  .stat span{font-size:11.5px; font-weight:800; color:#7c89a5;}
+
+  .rsec{margin:16px 0 0; text-align:left;}
+  .rsec h3{
+    font-size:14px; font-weight:900; margin:0 0 9px; display:flex; align-items:center; gap:7px;
+    letter-spacing:-.3px;
+  }
+  .rsec h3 em{font-style:normal; font-size:11.5px; font-weight:900; color:#b32b2e; background:#ffeceb; border-radius:999px; padding:4px 9px;}
+  .wlist{display:flex; flex-direction:column; gap:9px;}
+  .witem{background:#fff; border:1.5px solid #eef2fb; border-radius:16px; overflow:hidden;}
+  .witem > button{
+    width:100%; text-align:left; padding:13px 14px; display:flex; gap:10px; align-items:flex-start;
+    font-size:14px; font-weight:800; line-height:1.45; letter-spacing:-.3px; min-height:52px;
+  }
+  .witem .wno{flex:0 0 22px; color:#b32b2e; font-weight:900;}
+  .witem .wq{flex:1; word-break:keep-all;}
+  .witem .arw{color:#a9b4c9; font-weight:900; font-size:12px; margin-top:2px;}
+  .wbody{display:none; padding:0 14px 14px; font-size:13.5px; font-weight:700; line-height:1.6; color:#3c4a68;}
+  .witem.open .wbody{display:block;}
+  .wline{margin:6px 0; word-break:keep-all;}
+  .wline .k{font-weight:900; color:#7c89a5; margin-right:6px;}
+  .wline.o .v{color:#b32b2e; font-weight:900;}
+  .wline.a .v{color:#0a7c4d; font-weight:900;}
+  .wex{margin-top:9px; background:#f7f9ff; border-radius:12px; padding:11px 12px; color:#3c4a68;}
+  .empty{font-size:14px; font-weight:800; color:#0a7c4d; background:var(--green-soft); border-radius:14px; padding:14px; text-align:center;}
+
+  .rbtns{display:flex; flex-direction:column; gap:9px; margin-top:18px;}
+  .note{font-size:12px; color:#8b97b1; font-weight:700; line-height:1.6; margin-top:10px; text-align:center;}
+
+  /* modal */
+  .modal{position:fixed; inset:0; background:rgba(20,32,60,.42); display:none; align-items:flex-end; justify-content:center; z-index:30; padding:16px;}
+  .modal.show{display:flex;}
+  .sheet{
+    width:100%; max-width:500px; background:#fff; border-radius:22px; padding:20px 18px calc(18px + var(--safe-b));
+    box-shadow:0 -10px 40px rgba(20,32,60,.2); animation:up .2s ease;
+  }
+  @keyframes up{from{transform:translateY(20px); opacity:.6;} to{transform:none; opacity:1;}}
+  .sheet h3{margin:0 0 6px; font-size:17px; font-weight:900; letter-spacing:-.4px;}
+  .sheet p{margin:0 0 16px; font-size:13.5px; color:var(--sub); font-weight:700; line-height:1.5;}
+  .sheet .row{display:grid; grid-template-columns:1fr 1fr; gap:9px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HOME -->
+  <section class="screen active" id="scHome">
+    <div class="hero">
+      <span class="badge">🏫 서울서정초 4학년 2학기 · 2022 개정</span>
+      <h1>연서야,<br>오늘은 어느 단원 공부할까? 📚</h1>
+      <p>사회·과학 단원평가 대비 퀴즈예요. 문제마다 바로 채점하고, 틀린 문제는 해설과 함께 다시 풀 수 있어요.</p>
+    </div>
+
+    <div class="panel">
+      <div class="step"><span class="num">1</span><h2>과목 고르기</h2></div>
+      <div class="chips" id="subjectChips"></div>
+    </div>
+
+    <div class="panel">
+      <div class="step"><span class="num">2</span><h2>단원 고르기</h2></div>
+      <div class="chips" id="unitChips"></div>
+      <div class="selinfo" id="selInfo"></div>
+      <div class="bestline" id="bestLine" style="display:none"></div>
+    </div>
+
+    <div class="panel">
+      <div class="step"><span class="num">3</span><h2>문제 수 고르기</h2></div>
+      <div class="chips" id="countChips"></div>
+    </div>
+
+    <div class="bigwrap">
+      <button class="btn" id="startBtn">퀴즈 시작하기 🚀</button>
+    </div>
+    <p class="foot">사회 ㈜아이스크림미디어(한춘희) 2~3단원 · 과학 ㈜천재교과서(정용재) 2~4단원<br>2022 개정 교육과정 성취기준에 맞춘 77문항 수록</p>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="scQuiz">
+    <div class="qtop">
+      <button class="quit" id="quitBtn">← 그만하기</button>
+      <span class="combo off" id="combo">🔥 0연속</span>
+    </div>
+    <div class="pbar"><i id="pbar"></i></div>
+    <div class="counter"><span id="qcount">1 / 10</span><span id="qmode">단원평가</span></div>
+
+    <div class="qcard">
+      <div class="tags" id="qtags"></div>
+      <p class="qtext" id="qtext"></p>
+      <div id="answerArea"></div>
+      <div class="feedback" id="feedback">
+        <div class="fbhead" id="fbhead"></div>
+        <div class="fbsub" id="fbsub"></div>
+        <div class="ex" id="fbex"></div>
+      </div>
+      <div class="nextwrap" id="nextWrap" style="display:none">
+        <button class="btn" id="nextBtn">다음 문제 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="scResult">
+    <div class="rcard">
+      <div class="rstars" id="rstars"></div>
+      <div class="rscore" id="rscore"></div>
+      <div class="rpct" id="rpct"></div>
+      <div class="rmsg" id="rmsg"></div>
+      <div class="rbest" id="rbest" style="display:none"></div>
+      <div class="rstats">
+        <div class="stat"><b id="stCorrect">0</b><span>맞힌 문제</span></div>
+        <div class="stat"><b id="stCombo">0</b><span>최고 연속 정답</span></div>
+      </div>
+    </div>
+
+    <div class="rsec">
+      <h3>틀린 문제 모아보기 <em id="wrongCount">0개</em></h3>
+      <div class="wlist" id="wrongList"></div>
+    </div>
+
+    <div class="rbtns">
+      <button class="btn gold" id="retryWrongBtn">틀린 문제만 다시 풀기 🔁</button>
+      <button class="btn soft" id="retryAllBtn">같은 단원 다시 풀기</button>
+      <button class="btn ghost" id="homeBtn">처음으로</button>
+    </div>
+    <p class="note">최고 점수는 이 기기에만 저장돼요.</p>
+  </section>
+</div>
+
+<!-- quit modal -->
+<div class="modal" id="quitModal">
+  <div class="sheet">
+    <h3>퀴즈를 그만할까요?</h3>
+    <p>지금까지 푼 문제는 저장되지 않아요.</p>
+    <div class="row">
+      <button class="btn ghost" id="stayBtn">계속 풀기</button>
+      <button class="btn" id="leaveBtn">그만하기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   2022 개정 교육과정 · 초등 4학년 2학기
+   사회 ㈜아이스크림미디어(한춘희) 2~3단원
+   과학 ㈜천재교과서(정용재) 2~4단원
+   ========================================================= */
+
+const UNITS = {
+  s2: {sub:'social',  no:2, name:'지역문제를 해결하고 지역을 알리는 노력', full:'사회 2단원 · 지역문제를 해결하고 지역을 알리는 노력'},
+  s3: {sub:'social',  no:3, name:'다양한 환경과 삶의 모습',             full:'사회 3단원 · 다양한 환경과 삶의 모습'},
+  k2: {sub:'science', no:2, name:'생물과 환경',                        full:'과학 2단원 · 생물과 환경'},
+  k3: {sub:'science', no:3, name:'여러 가지 기체',                     full:'과학 3단원 · 여러 가지 기체'},
+  k4: {sub:'science', no:4, name:'기후 변화와 우리 생활',               full:'과학 4단원 · 기후 변화와 우리 생활'}
+};
+
+const SUBJECTS = {
+  social:  {label:'사회',       pub:'아이스크림미디어', units:['s2','s3']},
+  science: {label:'과학',       pub:'천재교과서',       units:['k2','k3','k4']},
+  both:    {label:'사회+과학',  pub:'혼합',             units:['s2','s3','k2','k3','k4']}
+};
+
+const QUESTIONS = [
+  /* ================= 사회 2단원 (16) ================= */
+  {id:'s2-01', u:'s2', tag:'지역 문제의 해결', t:'mc',
+   q:'우리 지역 주민들의 생활을 불편하게 만드는 문제를 무엇이라고 할까요?',
+   o:['지역 문제','지역 축제','지역 브랜드','지역 자치'], a:0,
+   ex:'지역 문제는 우리 지역 사람들의 생활을 불편하게 만드는 문제예요. 쓰레기, 교통, 안전, 환경 문제처럼 여러 가지가 있어요.'},
+
+  {id:'s2-02', u:'s2', tag:'지역 문제의 해결', t:'mc',
+   q:'다음 중 지역 문제에 해당하지 않는 것은 무엇일까요?',
+   o:['골목에 쓰레기가 쌓여 냄새가 심해요.','불법 주차 때문에 길이 자주 막혀요.','우리 동네 축제에 다른 지역 사람들이 많이 와요.','놀이터 시설이 낡아서 위험해요.'], a:2,
+   ex:'축제에 사람이 많이 오는 것은 지역을 알리고 경제에도 도움이 되는 좋은 일이에요. 지역 문제는 주민의 생활을 불편하게 만드는 것이에요.'},
+
+  {id:'s2-03', u:'s2', tag:'지역 문제의 해결', t:'ox',
+   q:'지역 문제는 한 사람의 노력만으로 해결하기 어려운 경우가 많다.',
+   a:true,
+   ex:'지역 문제는 여러 사람의 생활과 관련되어 있어서 주민, 지방 자치 단체, 기업 등이 함께 힘을 모아야 해결되는 경우가 많아요.'},
+
+  {id:'s2-04', u:'s2', tag:'지역 문제의 해결', t:'mc',
+   q:'우리 지역의 문제에 대한 많은 주민의 의견을 한 번에 모으려고 합니다. 가장 알맞은 방법은 무엇일까요?',
+   o:['설문 조사','인터뷰','신문 기사 읽기','지도 살펴보기'], a:0,
+   ex:'설문 조사는 많은 사람에게 똑같은 질문을 하여 의견을 한 번에 모을 수 있어요. 인터뷰는 한 사람의 이야기를 자세히 들을 때 알맞아요.'},
+
+  {id:'s2-05', u:'s2', tag:'지역 문제의 해결', t:'mc',
+   q:'지역 문제가 생긴 원인을 찾을 때 가장 바람직한 태도는 무엇일까요?',
+   o:['짐작으로 원인을 정한다.','여러 자료를 모아 근거를 확인한다.','친한 친구의 말만 믿는다.','원인은 찾지 않고 해결책만 생각한다.'], a:1,
+   ex:'원인을 정확히 알아야 알맞은 해결 방안을 찾을 수 있어요. 통계, 신문, 인터뷰 등 여러 자료를 모아 근거를 확인하는 것이 중요해요.'},
+
+  {id:'s2-06', u:'s2', tag:'지역 문제의 해결', t:'mc',
+   q:'지역 문제를 알아보는 데 도움이 되지 않는 자료는 무엇일까요?',
+   o:['지역 누리집의 소식','지역 신문 기사','주민 설문 조사 결과','인기 아이돌의 신곡 가사'], a:3,
+   ex:'지역 문제를 알아볼 때는 그 지역의 소식, 신문, 주민의 의견처럼 지역과 관련된 자료를 이용해야 해요.'},
+
+  {id:'s2-07', u:'s2', tag:'지역 문제의 해결', t:'mc',
+   q:'지역 문제를 해결하는 방법으로 알맞지 않은 것은 무엇일까요?',
+   o:['주민들이 자원봉사 활동을 한다.','지방 자치 단체가 해결 정책을 만든다.','문제를 다른 동네로 옮긴다.','주민과 기관이 함께 협력한다.'], a:2,
+   ex:'문제를 다른 곳으로 옮기면 다른 지역 사람들이 피해를 받아요. 그것은 해결이 아니라 새로운 문제를 만드는 일이에요.'},
+
+  {id:'s2-08', u:'s2', tag:'지역 문제의 해결', t:'ox',
+   q:'지역 문제의 해결 방안을 고를 때는 여러 방안의 좋은 점과 나쁜 점을 비교해 보는 것이 좋다.',
+   a:true,
+   ex:'해결 방안마다 좋은 점과 아쉬운 점이 있어요. 장점과 단점을 비교해 가장 합리적인 방안을 고르는 것이 중요해요.'},
+
+  {id:'s2-09', u:'s2', tag:'지역 문제의 해결', t:'mc',
+   q:'지역 문제의 해결 방안을 정할 때 가장 알맞은 방법은 무엇일까요?',
+   o:['힘이 센 사람이 혼자 정한다.','주민들이 함께 의논해 민주적으로 정한다.','가장 나이가 많은 사람이 정한다.','아무도 참여하지 않고 기다린다.'], a:1,
+   ex:'여러 사람의 의견을 모으고 대화와 토론을 거쳐 결정하는 것이 민주적인 방법이에요. 결정한 뒤에는 함께 실천하고 평가해요.'},
+
+  {id:'s2-10', u:'s2', tag:'지역 문제의 해결', t:'short',
+   q:'지역의 하천에서 쓰레기를 줍거나 급식 도우미를 하는 것처럼, 돈을 받지 않고 스스로 이웃을 돕는 활동을 무엇이라고 할까요?',
+   hint:'스스로 원해서 하는 봉사 활동이에요.',
+   a:['자원봉사','자원봉사활동','봉사활동','봉사'],
+   ex:'자원봉사는 주민들이 스스로 지역의 문제를 해결하는 방법 중 하나예요. 작은 실천도 지역을 살기 좋은 곳으로 만드는 데 도움이 돼요.'},
+
+  {id:'s2-11', u:'s2', tag:'지역을 알리는 노력', t:'mc',
+   q:'지역의 자연환경, 역사, 문화, 생산물을 널리 알리려는 까닭으로 가장 알맞은 것은 무엇일까요?',
+   o:['다른 지역 사람들이 우리 지역을 더 잘 알고 찾아오게 하려고','우리 지역을 다른 지역보다 낮추어 보이게 하려고','지역에 사는 주민 수를 줄이려고','지역 문제를 숨기려고'], a:0,
+   ex:'지역을 알리면 다른 지역 사람들이 관심을 가지고 찾아와 지역 경제가 살아나고, 주민들은 자기 지역에 자부심을 갖게 돼요.'},
+
+  {id:'s2-12', u:'s2', tag:'지역을 알리는 노력', t:'mc',
+   q:'보령 머드 축제처럼 지역의 자연환경을 이용해 지역을 알리는 축제로 알맞은 것은 무엇일까요?',
+   o:['함평 나비 축제','금산 인삼 축제','진주 남강 유등 축제','부산 국제 영화제'], a:0,
+   ex:'함평은 나비가 많이 사는 자연환경을, 보령은 품질 좋은 진흙을 이용해 축제를 열어요. 금산 인삼 축제는 지역의 생산물, 진주 유등 축제는 역사·문화와 관련이 있어요.'},
+
+  {id:'s2-13', u:'s2', tag:'지역을 알리는 노력', t:'mc',
+   q:'지역의 특산물을 널리 알리는 방법으로 가장 알맞은 것은 무엇일까요?',
+   o:['특산물 축제를 열고 맛보게 한다.','특산물을 모두 다른 지역으로 보낸다.','특산물을 인터넷에 소개하지 않는다.','특산물을 창고에만 보관한다.'], a:0,
+   ex:'축제, 누리집, 사회 관계망 서비스, 홍보 영상 등으로 지역의 특산물을 소개하면 많은 사람이 알게 되어 지역이 살아나요.'},
+
+  {id:'s2-14', u:'s2', tag:'지역을 알리는 노력', t:'ox',
+   q:'지역을 알리기 위해 지역 누리집, 사회 관계망 서비스, 관광 안내 책자를 이용할 수 있다.',
+   a:true,
+   ex:'지역 누리집과 사회 관계망 서비스는 빠르게 널리 알릴 수 있고, 관광 안내 책자는 자세한 정보를 담을 수 있어요.'},
+
+  {id:'s2-15', u:'s2', tag:'지역을 알리는 노력', t:'short',
+   q:'어떤 지역을 널리 알리기 위해 그 지역의 특성과 이미지를 담아 만든 것(로고, 캐릭터, 슬로건 등)을 무엇이라고 할까요?',
+   hint:'지역을 대표하는 상징이에요.',
+   a:['지역브랜드','브랜드','지역브랜드상품'],
+   ex:'지역 브랜드는 지역의 자연환경, 역사, 문화, 생산물 같은 특징을 담아 만든 상징이에요. 다른 지역과 구별되게 해 주고 자부심도 높여 줘요.'},
+
+  {id:'s2-16', u:'s2', tag:'지역을 알리는 노력', t:'mc',
+   q:'지역 브랜드의 사례로 알맞은 것은 무엇일까요?',
+   o:['지역의 특성을 담은 캐릭터와 로고','다른 지역에서 그대로 가져온 상표','지역과 상관없는 세계적인 유명 그림','옛날에 없어진 건물의 사진'], a:0,
+   ex:'지역 브랜드는 그 지역만의 자연환경, 역사, 문화, 생산물을 담아 다른 지역과 구별되게 만든 것이에요.'},
+
+  /* ================= 사회 3단원 (16) ================= */
+  {id:'s3-01', u:'s3', tag:'지역의 환경과 변화', t:'mc',
+   q:'인간의 힘으로 쉽게 바꿀 수 없는 땅의 모양, 기후, 하천 같은 환경을 무엇이라고 할까요?',
+   o:['자연환경','인문환경','교통환경','생활환경'], a:0,
+   ex:'자연환경은 산, 평야, 하천, 바다, 기후처럼 자연적으로 만들어진 환경이에요.'},
+
+  {id:'s3-02', u:'s3', tag:'지역의 환경과 변화', t:'mc',
+   q:'다음 중 인문환경에 해당하는 것은 무엇일까요?',
+   o:['높은 산','넓은 강','도로와 건물','계절과 기후'], a:2,
+   ex:'인문환경은 사람들이 만들어 놓은 환경이에요. 도로, 건물, 학교, 시장, 문화유산 등이 여기에 해당해요.'},
+
+  {id:'s3-03', u:'s3', tag:'지역의 환경과 변화', t:'mc',
+   q:'산지가 많은 지역에서 볼 수 있는 생활 모습으로 알맞은 것은 무엇일까요?',
+   o:['기온이 낮은 높은 곳에서 고랭지 채소를 재배한다.','넓은 바다에서 배를 타고 고기를 잡는다.','넓은 평야에서 벼를 재배한다.','모래사장에서 해수욕을 즐긴다.'], a:0,
+   ex:'높은 산지는 여름에도 시원해서 고랭지 채소, 약초, 목축 등이 발달해요. 지역의 자연환경에 따라 생활 모습이 달라져요.'},
+
+  {id:'s3-04', u:'s3', tag:'지역의 환경과 변화', t:'mc',
+   q:'넓은 평야가 있는 지역에서 주로 볼 수 있는 모습은 무엇일까요?',
+   o:['벼농사를 짓는 논','고랭지 채소 밭','스키장 슬로프','해수욕장과 항구'], a:0,
+   ex:'평야는 땅이 넓고 기름져서 벼농사에 알맞아요. 우리나라의 대표적인 곡창 지대도 평야 지방이에요.'},
+
+  {id:'s3-05', u:'s3', tag:'지역의 환경과 변화', t:'mc',
+   q:'바다와 가까운 해안 지역에서 발달하기 쉬운 것은 무엇일까요?',
+   o:['어업과 항구','고랭지 농업','목축업만','사막 농업'], a:0,
+   ex:'해안 지역은 바다를 이용해 고기를 잡거나 배가 드나드는 항구, 해수욕장 같은 시설이 발달해요.'},
+
+  {id:'s3-06', u:'s3', tag:'지역의 환경과 변화', t:'ox',
+   q:'우리나라 안에서도 지역마다 자연환경과 인문환경이 달라 생활 모습이 다르게 나타난다.',
+   a:true,
+   ex:'같은 나라 안에서도 산지, 평야, 해안, 도시에 따라 사람들이 일하고 사는 모습이 다르게 나타나요.'},
+
+  {id:'s3-07', u:'s3', tag:'지역의 환경과 변화', t:'mc',
+   q:'환경을 개발할 때 생길 수 있는 좋은 점으로 알맞은 것은 무엇일까요?',
+   o:['교통이 편리해지고 일자리가 생긴다.','자연이 그대로 보존된다.','쓰레기가 더 많이 쌓인다.','공기가 더 나빠진다.'], a:0,
+   ex:'개발은 교통과 생활을 편리하게 하고 일자리를 만들어 주지만, 자연이 훼손되고 오염이 생기는 문제도 함께 생길 수 있어요.'},
+
+  {id:'s3-08', u:'s3', tag:'지역의 환경과 변화', t:'mc',
+   q:'환경을 개발할 때 바람직한 방향은 무엇일까요?',
+   o:['자연을 모두 없애고 개발한다.','개발과 자연 보호의 균형을 맞춘다.','주민의 의견은 묻지 않는다.','오염이 생겨도 그대로 둔다.'], a:1,
+   ex:'자연을 지키면서 필요한 만큼 개발하는 지속 가능한 개발이 바람직해요. 생태 통로를 만들거나 오염을 줄이는 노력도 함께해야 해요.'},
+
+  {id:'s3-09', u:'s3', tag:'지역의 환경과 변화', t:'ox',
+   q:'환경을 개발할 때에는 그 지역에 사는 주민들의 의견을 들은 뒤 계획을 세워야 한다.',
+   a:true,
+   ex:'개발로 가장 큰 영향을 받는 사람은 그 지역 주민이에요. 주민의 의견을 들으면 문제를 줄이고 더 나은 방법을 찾을 수 있어요.'},
+
+  {id:'s3-10', u:'s3', tag:'도시의 특징과 생활 모습', t:'mc',
+   q:'도시의 특징으로 알맞지 않은 것은 무엇일까요?',
+   o:['인구가 많다.','건물과 도로가 빽빽하게 들어서 있다.','사는 사람 대부분이 논밭에서 농사를 짓는다.','교통이 발달해 있다.'], a:2,
+   ex:'도시에는 농사를 짓는 사람보다 회사원, 가게 운영, 서비스업 등 여러 가지 직업에 종사하는 사람이 많아요.'},
+
+  {id:'s3-11', u:'s3', tag:'도시의 특징과 생활 모습', t:'mc',
+   q:'도시의 산업 특징으로 알맞은 것은 무엇일까요?',
+   o:['서비스업과 제조업이 발달한다.','사는 사람 대부분이 벼농사를 짓는다.','어업만 발달한다.','사람이 거의 살지 않는다.'], a:0,
+   ex:'도시에는 물건을 파는 가게, 회사, 공장 같은 일터가 많아 서비스업과 제조업이 발달해요.'},
+
+  {id:'s3-12', u:'s3', tag:'도시의 특징과 생활 모습', t:'short',
+   q:'사람들이 많이 모여 살면서 건물과 도로가 빽빽하게 들어선 곳을 무엇이라고 할까요?',
+   hint:'촌락과 반대되는 개념이에요.',
+   a:['도시'],
+   ex:'도시는 인구가 많고 건물과 도로가 밀집한 곳이에요. 교통, 산업, 문화 시설이 발달해 있어요.'},
+
+  {id:'s3-13', u:'s3', tag:'도시의 특징과 생활 모습', t:'mc',
+   q:'도시 생활의 좋은 점으로 알맞은 것은 무엇일까요?',
+   o:['병원, 학교, 문화 시설을 가까이에서 이용할 수 있다.','공기가 맑고 매우 조용하다.','집값이 싸고 집이 넓다.','자동차가 거의 다니지 않는다.'], a:0,
+   ex:'도시에는 병원, 학교, 도서관, 영화관 같은 시설이 많아 편리하게 이용할 수 있고 일자리도 다양해요.'},
+
+  {id:'s3-14', u:'s3', tag:'도시의 특징과 생활 모습', t:'mc',
+   q:'도시 생활의 문제점으로 알맞지 않은 것은 무엇일까요?',
+   o:['출퇴근 시간에 교통이 매우 혼잡하다.','집값이 비싸서 집 구하기가 어렵다.','자동차와 공장 때문에 대기 오염이 생긴다.','자연환경이 잘 보존되어 있어요.'], a:3,
+   ex:'도시에서는 교통 혼잡, 비싼 집값, 소음과 대기 오염, 쓰레기 문제 등이 생겨요. 자연환경이 잘 보존된 것은 도시의 문제점이 아니에요.'},
+
+  {id:'s3-15', u:'s3', tag:'도시의 특징과 생활 모습', t:'mc',
+   q:'촌락이 도시처럼 변해 가는 과정을 무엇이라고 할까요?',
+   o:['도시화','촌락화','자연화','이촌화'], a:0,
+   ex:'도시화는 사람들이 모이고 건물과 도로가 늘어나면서 촌락이 도시의 모습으로 바뀌는 것이에요.'},
+
+  {id:'s3-16', u:'s3', tag:'도시의 특징과 생활 모습', t:'short',
+   q:'도시에서 많은 사람이 함께 이용하는 버스, 지하철과 같은 교통수단을 무엇이라고 할까요?',
+   hint:'여러 사람이 함께 타는 교통수단이에요.',
+   a:['대중교통','대중교통수단','대중 교통'],
+   ex:'대중교통은 많은 사람을 한 번에 실어 나를 수 있어 도시의 교통 혼잡과 공기 오염을 줄이는 데 도움이 돼요.'},
+
+  /* ================= 과학 2단원 (15) ================= */
+  {id:'k2-01', u:'k2', tag:'생태계의 구성 요소', t:'mc',
+   q:'어떤 곳에 사는 생물과 그 생물을 둘러싼 환경이 서로 영향을 주고받는 전체를 무엇이라고 할까요?',
+   o:['생태계','먹이 사슬','생물 요소','서식지'], a:0,
+   ex:'생태계는 숲, 강, 바다처럼 어떤 지역에 사는 생물과 비생물 요소가 서로 영향을 주고받는 전체를 말해요.'},
+
+  {id:'k2-02', u:'k2', tag:'생태계의 구성 요소', t:'mc',
+   q:'생태계의 구성 요소를 크게 둘로 나누면 무엇과 무엇일까요?',
+   o:['생물 요소와 비생물 요소','식물 요소와 동물 요소','생산자와 소비자','물과 공기'], a:0,
+   ex:'생태계는 살아 있는 생물 요소와, 살아 있지 않은 비생물 요소로 이루어져 있어요.'},
+
+  {id:'k2-03', u:'k2', tag:'생태계의 구성 요소', t:'mc',
+   q:'다음 중 비생물 요소에 해당하는 것은 무엇일까요?',
+   o:['소나무','다람쥐','버섯','햇빛'], a:3,
+   ex:'비생물 요소는 햇빛, 물, 공기, 흙, 온도처럼 살아 있지 않은 요소예요. 나무, 다람쥐, 버섯은 모두 생물 요소예요.'},
+
+  {id:'k2-04', u:'k2', tag:'생태계의 구성 요소', t:'mc',
+   q:'햇빛을 이용해 스스로 양분을 만드는 생물 요소를 무엇이라고 할까요?',
+   o:['생산자','소비자','분해자','비생물 요소'], a:0,
+   ex:'식물처럼 스스로 양분을 만드는 생물을 생산자라고 해요. 생산자가 만든 양분을 다른 생물이 먹으며 살아가요.'},
+
+  {id:'k2-05', u:'k2', tag:'생태계의 구성 요소', t:'mc',
+   q:'풀을 먹고 사는 토끼는 생태계에서 무엇에 해당할까요?',
+   o:['생산자','소비자','분해자','비생물 요소'], a:1,
+   ex:'다른 생물을 먹어 양분을 얻는 동물을 소비자라고 해요. 토끼는 풀을 먹는 소비자예요.'},
+
+  {id:'k2-06', u:'k2', tag:'생태계의 구성 요소', t:'mc',
+   q:'버섯, 곰팡이, 세균처럼 죽은 생물이나 배설물을 분해해 흙으로 돌려보내는 생물은 무엇일까요?',
+   o:['생산자','소비자','분해자','포식자'], a:2,
+   ex:'분해자는 죽은 생물을 잘게 분해해 흙 속에 양분으로 돌려보내요. 그래서 생태계를 깨끗하게 하고 식물이 다시 자랄 수 있게 해 줘요.'},
+
+  {id:'k2-07', u:'k2', tag:'먹이 관계', t:'short',
+   q:'생물이 서로 먹고 먹히는 관계를 한 줄로 이어 나타낸 것을 무엇이라고 할까요?',
+   hint:'풀 → 메뚜기 → 개구리처럼 화살표로 이어요.',
+   a:['먹이사슬','먹이 사슬'],
+   ex:'먹이 사슬은 먹고 먹히는 관계를 한 줄로 나타낸 것이에요. 화살표는 먹히는 생물에서 먹는 생물로 향해요.'},
+
+  {id:'k2-08', u:'k2', tag:'먹이 관계', t:'mc',
+   q:'여러 개의 먹이 사슬이 서로 얽혀 그물처럼 된 것은 무엇일까요?',
+   o:['먹이 그물','먹이 사슬','생태계','서식지'], a:0,
+   ex:'먹이 그물은 여러 먹이 사슬이 서로 얽힌 것이에요. 실제 생태계에서는 한 생물이 여러 생물을 먹고 먹히기 때문에 그물처럼 복잡해요.'},
+
+  {id:'k2-09', u:'k2', tag:'먹이 관계', t:'ox',
+   q:'먹이 관계가 단순할수록 생물들이 살아남기에 더 유리하다.',
+   a:false,
+   ex:'먹이 관계가 복잡하게 얽혀 있을수록 한 가지 먹이가 줄어도 다른 먹이로 살아갈 수 있어서 생물이 살아남기에 유리해요.'},
+
+  {id:'k2-10', u:'k2', tag:'먹이 관계', t:'mc',
+   q:'먹이 사슬의 예로 알맞은 것은 무엇일까요?',
+   o:['풀 → 메뚜기 → 개구리 → 뱀','뱀 → 개구리 → 메뚜기 → 풀','흙 → 돌 → 모래 → 물','햇빛 → 공기 → 물 → 흙'], a:0,
+   ex:'풀을 메뚜기가 먹고, 메뚜기를 개구리가 먹고, 개구리를 뱀이 먹는 관계를 화살표로 나타낸 것이에요.'},
+
+  {id:'k2-11', u:'k2', tag:'생태계 보전', t:'mc',
+   q:'인간 활동 때문에 생태계에 생기는 문제로 알맞지 않은 것은 무엇일까요?',
+   o:['숲을 없애 생물의 서식지를 파괴한다.','강과 바다를 오염시킨다.','동물이 다닐 수 있는 생태 통로를 만든다.','쓰레기를 아무 데나 버린다.'], a:2,
+   ex:'생태 통로는 도로로 끊어진 서식지를 이어 주어 생물을 보호하는 활동이에요. 문제가 아니라 해결 노력이에요.'},
+
+  {id:'k2-12', u:'k2', tag:'생태계 보전', t:'mc',
+   q:'생태계를 보전하기 위해 우리가 할 수 있는 일로 알맞지 않은 것은 무엇일까요?',
+   o:['일회용품 사용을 줄인다.','재활용을 생활화한다.','멸종 위기 생물을 보호한다.','서식지의 나무를 모두 베어 낸다.'], a:3,
+   ex:'나무를 모두 베면 생물의 집이 사라져요. 쓰레기 줄이기, 재활용, 멸종 위기 생물 보호가 생태계를 지키는 일이에요.'},
+
+  {id:'k2-13', u:'k2', tag:'생태계 보전', t:'ox',
+   q:'환경 오염이 심해지면 살 수 있는 생물의 종류가 다양해진다.',
+   a:false,
+   ex:'환경 오염이 심해지면 살 수 없는 생물이 생겨 생물의 종류, 즉 생물 다양성이 줄어들어요.'},
+
+  {id:'k2-14', u:'k2', tag:'생태계의 구성 요소', t:'mc',
+   q:'동물이나 식물이 살고 있는 곳을 무엇이라고 할까요?',
+   o:['서식지','생산지','분해지','이동지'], a:0,
+   ex:'서식지는 생물이 먹이를 구하고 새끼를 키우며 살아가는 곳이에요. 서식지가 파괴되면 생물은 살아가기 어려워져요.'},
+
+  {id:'k2-15', u:'k2', tag:'생태계 보전', t:'mc',
+   q:'숲에서 나무를 베어 낸 뒤에 생길 수 있는 일로 가장 알맞은 것은 무엇일까요?',
+   o:['새와 다람쥐가 살 서식지가 줄어든다.','새의 먹이가 갑자기 늘어난다.','생태계가 더 풍부해진다.','비가 항상 고르게 내린다.'], a:0,
+   ex:'나무가 사라지면 그곳에 살던 새, 다람쥐, 곤충의 집과 먹이가 함께 사라져 생물들이 살기 어려워져요.'},
+
+  /* ================= 과학 3단원 (15) ================= */
+  {id:'k3-01', u:'k3', tag:'기체의 무게와 부피', t:'mc',
+   q:'공기를 넣은 페트병이 공기를 넣기 전보다 무거워졌습니다. 이 실험으로 알 수 있는 것은 무엇일까요?',
+   o:['기체는 무게가 있다.','기체는 무게가 없다.','기체는 색깔이 있다.','기체는 온도에 따라 색이 변한다.'], a:0,
+   ex:'용기에 공기를 넣으면 무게가 늘어나요. 이것은 기체도 무게가 있다는 것을 보여 줘요.'},
+
+  {id:'k3-02', u:'k3', tag:'기체의 무게와 부피', t:'ox',
+   q:'기체는 눈에 보이지 않지만 무게가 있다.',
+   a:true,
+   ex:'공기를 넣은 공이나 타이어가 더 무거워지는 것처럼, 기체도 눈에 보이지 않을 뿐 무게가 있어요.'},
+
+  {id:'k3-03', u:'k3', tag:'기체의 무게와 부피', t:'mc',
+   q:'고무풍선을 씌운 삼각 플라스크를 뜨거운 물에 넣었을 때 고무풍선은 어떻게 될까요?',
+   o:['부풀어 커진다.','오그라들어 작아진다.','모양이 변하지 않는다.','터져서 사라진다.'], a:0,
+   ex:'온도가 높아지면 플라스크 속 공기의 부피가 늘어나 고무풍선이 부풀어 올라요.'},
+
+  {id:'k3-04', u:'k3', tag:'기체의 무게와 부피', t:'mc',
+   q:'얼음물에 넣은 삼각 플라스크의 고무풍선이 작아졌습니다. 그 까닭은 무엇일까요?',
+   o:['온도가 낮아져 공기의 부피가 줄어서','공기가 모두 없어져서','공기의 무게가 줄어서','물이 플라스크 안으로 들어와서'], a:0,
+   ex:'온도가 낮아지면 기체의 부피가 줄어들어요. 그래서 고무풍선이 오그라들어요.'},
+
+  {id:'k3-05', u:'k3', tag:'기체의 무게와 부피', t:'mc',
+   q:'온도가 높아지면 기체의 부피는 어떻게 될까요?',
+   o:['늘어난다.','줄어든다.','변하지 않는다.','늘었다 줄었다 반복한다.'], a:0,
+   ex:'기체는 온도가 높아지면 부피가 늘어나고, 온도가 낮아지면 부피가 줄어들어요.'},
+
+  {id:'k3-06', u:'k3', tag:'기체의 무게와 부피', t:'mc',
+   q:'기체에 가하는 압력이 높아지면 기체의 부피는 어떻게 될까요?',
+   o:['줄어든다.','늘어난다.','변하지 않는다.','사라진다.'], a:0,
+   ex:'기체를 누르는 힘(압력)이 높아지면 부피가 줄어들고, 압력이 낮아지면 부피가 늘어나요.'},
+
+  {id:'k3-07', u:'k3', tag:'기체의 무게와 부피', t:'short',
+   q:'공기를 넣고 입구를 막은 주사기의 피스톤을 누르면, 주사기 속 공기의 부피가 어떻게 될까요?',
+   hint:'누르는 힘이 세지면 기체의 부피는 어떻게 되는지 생각해 보세요.',
+   a:['줄어든다','줄어듦','작아진다','줄어들어요','작아져요'],
+   ex:'피스톤을 누르면 압력이 높아져 주사기 속 공기의 부피가 줄어들어요. 손을 떼면 다시 늘어나요.'},
+
+  {id:'k3-08', u:'k3', tag:'기체의 무게와 부피', t:'mc',
+   q:'찌그러진 탁구공을 원래 모양으로 펴려면 어떻게 해야 할까요?',
+   o:['뜨거운 물에 넣는다.','냉장고에 넣어 둔다.','손으로 세게 눌러 압력을 높인다.','찬물에 오래 담가 둔다.'], a:0,
+   ex:'탁구공 속 공기의 온도가 높아지면 부피가 늘어나 찌그러진 부분이 펴져요.'},
+
+  {id:'k3-09', u:'k3', tag:'기체의 무게와 부피', t:'mc',
+   q:'여름철 자전거 타이어가 겨울보다 더 부풀어 오르는 까닭은 무엇일까요?',
+   o:['온도가 높아져 타이어 속 공기의 부피가 늘어나서','압력이 높아져 공기의 부피가 늘어나서','공기의 무게가 줄어들어서','타이어가 작아져서'], a:0,
+   ex:'여름에는 기온이 높아 타이어 속 공기의 부피가 늘어나요. 그래서 타이어가 더 부풀고, 너무 넣으면 터질 수도 있어요.'},
+
+  {id:'k3-10', u:'k3', tag:'기체의 무게와 부피', t:'mc',
+   q:'과자 봉지를 가지고 높은 산에 올라갔더니 봉지가 부풀었습니다. 그 까닭은 무엇일까요?',
+   o:['높은 곳은 압력이 낮아져 공기의 부피가 늘어나서','높은 곳은 온도가 높아져서','봉지 안에서 기체가 새로 생겨서','봉지가 무거워져서'], a:0,
+   ex:'높은 산으로 올라갈수록 공기가 적어져 압력이 낮아져요. 그러면 봉지 속 공기의 부피가 늘어나 봉지가 부풀어요.'},
+
+  {id:'k3-11', u:'k3', tag:'기체의 무게와 부피', t:'ox',
+   q:'공기 매트리스에 누르면 눌린 부분이 찌그러졌다가 일어나면 다시 펴지는 것은 압력에 따라 기체의 부피가 달라지기 때문이다.',
+   a:true,
+   ex:'누르면 압력이 높아져 부피가 줄고, 누르지 않으면 압력이 낮아져 부피가 다시 늘어나요.'},
+
+  {id:'k3-12', u:'k3', tag:'생활 속 기체', t:'mc',
+   q:'불이 날 때 사용하는 소화기에는 어떤 기체가 들어 있을까요?',
+   o:['이산화 탄소','산소','헬륨','수소'], a:0,
+   ex:'이산화 탄소는 물질이 타는 것을 막는 성질이 있어 소화기에 이용해요.'},
+
+  {id:'k3-13', u:'k3', tag:'생활 속 기체', t:'mc',
+   q:'물속에서 숨을 쉴 수 있도록 하는 산소 호흡 장치에 이용되는 기체는 무엇일까요?',
+   o:['산소','질소','헬륨','네온'], a:0,
+   ex:'산소는 사람이 숨을 쉬는 데 꼭 필요해서 산소 호흡 장치나 병원에서 이용해요.'},
+
+  {id:'k3-14', u:'k3', tag:'생활 속 기체', t:'mc',
+   q:'풍선이나 비행선을 공중에 띄우는 데 이용되는 기체는 무엇일까요?',
+   o:['헬륨','산소','이산화 탄소','질소'], a:0,
+   ex:'헬륨은 공기보다 가벼워서 위로 떠요. 그래서 풍선이나 비행선을 띄울 때 이용해요.'},
+
+  {id:'k3-15', u:'k3', tag:'생활 속 기체', t:'short',
+   q:'과자 봉지에 넣어 내용물이 부서지거나 변하지 않게 하고, 비행기 타이어를 채우는 데에도 이용되는 기체는 무엇일까요?',
+   hint:'공기의 약 78%를 차지하는 기체예요.',
+   a:['질소'],
+   ex:'질소는 다른 물질과 잘 반응하지 않아 과자 봉지에 넣어 내용물을 보호하고, 비행기 타이어를 채우는 데에도 이용해요.'},
+
+  /* ================= 과학 4단원 (15) ================= */
+  {id:'k4-01', u:'k4', tag:'기후 변화 현상', t:'mc',
+   q:'일정한 지역에서 오랜 기간(보통 30년 이상)에 걸쳐 나타나는 평균적인 날씨를 무엇이라고 할까요?',
+   o:['기후','날씨','기온','계절'], a:0,
+   ex:'날씨는 오늘처럼 짧은 시간의 대기 상태이고, 기후는 오랜 기간의 평균적인 날씨예요.'},
+
+  {id:'k4-02', u:'k4', tag:'기후 변화 현상', t:'mc',
+   q:'기후가 변하는 것을 무엇이라고 할까요?',
+   o:['기후 변화','날씨 변화','계절 변화','기온 변화'], a:0,
+   ex:'기후 변화는 오랜 기간에 걸친 평균적인 날씨가 달라지는 것이에요.'},
+
+  {id:'k4-03', u:'k4', tag:'기후 변화 현상', t:'mc',
+   q:'다음 중 기후 변화 현상이 아닌 것은 무엇일까요?',
+   o:['폭염','한파','가뭄','맑은 날'], a:3,
+   ex:'폭염, 한파, 가뭄, 홍수, 폭설은 기후 변화로 나타나는 대표적인 현상이에요. 맑은 날은 보통의 날씨예요.'},
+
+  {id:'k4-04', u:'k4', tag:'기후 변화 현상', t:'mc',
+   q:'기온이 매우 높아져 더위가 아주 심한 상태를 무엇이라고 할까요?',
+   o:['폭염','한파','가뭄','홍수'], a:0,
+   ex:'폭염은 더위가 아주 심한 상태, 한파는 추위가 아주 심한 상태예요.'},
+
+  {id:'k4-05', u:'k4', tag:'기후 변화 현상', t:'mc',
+   q:'오랫동안 비가 오지 않아 물이 부족해지는 현상은 무엇일까요?',
+   o:['가뭄','홍수','폭설','한파'], a:0,
+   ex:'가뭄이 오래 계속되면 물과 식량이 부족해지고 농작물이 잘 자라지 못해요.'},
+
+  {id:'k4-06', u:'k4', tag:'기후 변화 현상', t:'ox',
+   q:'기후 변화 현상은 예전보다 더 자주, 더 심하게 나타나고 있다.',
+   a:true,
+   ex:'폭염, 한파, 가뭄, 홍수 같은 기후 변화 현상이 전 세계적으로 더 자주, 더 심하게 나타나고 있어요.'},
+
+  {id:'k4-07', u:'k4', tag:'기후 변화의 영향', t:'mc',
+   q:'기후 변화에 가장 큰 영향을 주는 인간 활동은 무엇일까요?',
+   o:['석유, 석탄 같은 화석 연료를 많이 사용하는 것','나무를 많이 심는 것','가까운 곳을 자전거로 가는 것','물을 아껴 쓰는 것'], a:0,
+   ex:'화석 연료를 태우면 이산화 탄소가 많이 나와 지구의 평균 기온이 높아져요. 산림 훼손, 에너지와 물 낭비, 많은 쓰레기도 원인이 돼요.'},
+
+  {id:'k4-08', u:'k4', tag:'기후 변화의 영향', t:'mc',
+   q:'화석 연료를 사용할 때 대기 중으로 많이 나오는 기체는 무엇일까요?',
+   o:['이산화 탄소','산소','헬륨','네온'], a:0,
+   ex:'대기 중의 이산화 탄소가 늘어나면 지구에서 빠져나가던 열이 갇혀 지구의 평균 기온이 높아져요.'},
+
+  {id:'k4-09', u:'k4', tag:'기후 변화의 영향', t:'mc',
+   q:'지구의 평균 기온이 높아질 때 일어나는 일로 알맞은 것은 무엇일까요?',
+   o:['빙하가 녹아 해수면이 높아진다.','빙하가 더 두꺼워진다.','해수면이 낮아진다.','바닷물의 온도가 낮아진다.'], a:0,
+   ex:'극지방과 육지의 빙하, 언 땅이 녹으면 바닷물이 늘어나 해수면이 높아져요.'},
+
+  {id:'k4-10', u:'k4', tag:'기후 변화의 영향', t:'short',
+   q:'지구의 기온이 높아져 빙하가 녹으면서 바닷물의 높이가 높아지는 것을 무엇이라고 할까요?',
+   hint:'바다의 수면이 올라가는 현상이에요.',
+   a:['해수면상승','해수면 상승','해수면의상승'],
+   ex:'해수면이 상승하면 바닷가 지역이 물에 잠겨 사람과 동식물이 살 수 있는 육지 면적이 줄어들어요.'},
+
+  {id:'k4-11', u:'k4', tag:'기후 변화의 영향', t:'mc',
+   q:'해수면이 높아지면 생기는 피해로 알맞은 것은 무엇일까요?',
+   o:['바닷가 마을이 물에 잠긴다.','육지 면적이 넓어진다.','산이 더 높아진다.','비가 전혀 오지 않는다.'], a:0,
+   ex:'해수면이 상승하면 낮은 바닷가 지역이 물에 잠기고, 사람과 동식물이 살 수 있는 땅이 줄어들어요.'},
+
+  {id:'k4-12', u:'k4', tag:'기후 변화의 영향', t:'mc',
+   q:'기후 변화가 우리 생활과 환경에 미치는 영향으로 알맞지 않은 것은 무엇일까요?',
+   o:['폭염으로 야외 활동을 하기 어려워진다.','가뭄으로 물과 식량이 부족해진다.','홍수로 자동차와 건물이 물에 잠긴다.','기후 변화로 모든 병이 사라진다.'], a:3,
+   ex:'기후 변화로 폭염, 가뭄, 홍수 피해가 생기고, 꽃이 피는 시기가 빨라지거나 산호초가 하얗게 변하는 등 환경도 달라져요.'},
+
+  {id:'k4-13', u:'k4', tag:'기후 변화 대응', t:'mc',
+   q:'기후 변화에 대응하는 사회의 노력으로 알맞은 것은 무엇일까요?',
+   o:['친환경 에너지 기술을 개발한다.','화석 연료를 더 많이 사용한다.','나무를 모두 베어 낸다.','에너지를 더 많이 쓰도록 장려한다.'], a:0,
+   ex:'나라들은 국제 협약을 맺고, 친환경 에너지 기술을 개발하며, 기후 변화 피해를 줄이기 위한 물 관리와 법을 만들어요.'},
+
+  {id:'k4-14', u:'k4', tag:'기후 변화 대응', t:'mc',
+   q:'생활 속에서 기후 변화에 대응하는 방법으로 알맞지 않은 것은 무엇일까요?',
+   o:['가까운 곳은 걷거나 자전거를 이용한다.','사용하지 않는 플러그를 뽑는다.','지역에서 난 농산물을 이용한다.','일회용품을 더 많이 사용한다.'], a:3,
+   ex:'일회용품을 많이 쓰면 쓰레기가 늘고, 그것을 처리할 때 이산화 탄소가 나와요. 다회용기를 쓰는 것이 기후 변화에 대응하는 방법이에요.'},
+
+  {id:'k4-15', u:'k4', tag:'기후 변화 대응', t:'ox',
+   q:'기후 변화에 대응하기 위해 여러 나라가 함께 약속한 국제 협약이 있다.',
+   a:true,
+   ex:'여러 나라가 함께 기후 변화를 줄이기 위해 약속한 국제 협약이 있어요. 나라마다 에너지 사용을 줄이고 친환경 기술을 개발하고 있어요.'}
+];
+
+/* ================= 상태 ================= */
+const store = {
+  subject: 'social',
+  unit: 'all',
+  count: 10,
+  queue: [],
+  idx: 0,
+  answers: [],
+  combo: 0,
+  maxCombo: 0,
+  review: false,
+  lastSettings: null
+};
+
+const BEST_KEY = 'yeonseo.unitquiz.best.v1';
+
+function $(sel){ return document.querySelector(sel); }
+function show(id){
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function shuffle(a){
+  for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+function norm(s){
+  return String(s==null?'':s)
+    .toLowerCase()
+    .replace(/[\s\u00a0]/g,'')
+    .replace(/[.,!?~'"“”‘’()\[\]{}·…\-_/]/g,'');
+}
+function esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ================= 최고 점수 저장 ================= */
+function loadBest(){
+  try { return JSON.parse(localStorage.getItem(BEST_KEY) || '{}') || {}; } catch(e){ return {}; }
+}
+function bestKey(subject, unit, count){ return subject + '|' + unit + '|' + count; }
+function getBest(subject, unit, count){
+  var all = loadBest();
+  return all[bestKey(subject, unit, count)] || null;
+}
+function saveBest(subject, unit, count, correct, total){
+  var all = loadBest();
+  var k = bestKey(subject, unit, count);
+  var pct = total ? Math.round(correct/total*100) : 0;
+  var prev = all[k];
+  var isNew = false;
+  if(!prev || pct > prev.pct || (pct === prev.pct && total > prev.total)){
+    all[k] = {correct:correct, total:total, pct:pct, ts:Date.now()};
+    try { localStorage.setItem(BEST_KEY, JSON.stringify(all)); } catch(e){}
+    isNew = true;
+  }
+  return isNew;
+}
+
+/* ================= 홈 화면 ================= */
+function unitsFor(subject){ return SUBJECTS[subject].units; }
+
+function unitLabel(subject, uid){
+  var u = UNITS[uid];
+  if(subject === 'both') return (u.sub === 'social' ? '사회 ' : '과학 ') + u.no + '단원';
+  return u.no + '단원';
+}
+function unitShortName(subject, uid){
+  var u = UNITS[uid];
+  if(subject === 'both') return (u.sub === 'social' ? '사회 ' : '과학 ') + u.name;
+  return u.name;
+}
+
+function renderSubjectChips(){
+  var box = $('#subjectChips');
+  box.innerHTML = '';
+  [['social','사회','아이스크림미디어'],['science','과학','천재교과서'],['both','사회+과학','섞어서']].forEach(function(s){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.setAttribute('aria-pressed', store.subject === s[0] ? 'true' : 'false');
+    b.innerHTML = esc(s[1]) + ' <small>' + esc(s[2]) + '</small>';
+    b.onclick = function(){
+      if(store.subject === s[0]) return;
+      store.subject = s[0];
+      store.unit = 'all';
+      store.count = 10;
+      renderSubjectChips(); renderUnitChips(); renderCountChips(); renderInfo();
+    };
+    box.appendChild(b);
+  });
+}
+
+function renderUnitChips(){
+  var box = $('#unitChips');
+  box.innerHTML = '';
+  var ids = unitsFor(store.subject);
+  ids.forEach(function(uid){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.setAttribute('aria-pressed', store.unit === uid ? 'true' : 'false');
+    b.textContent = unitLabel(store.subject, uid);
+    b.onclick = function(){ store.unit = uid; renderUnitChips(); renderCountChips(); renderInfo(); };
+    box.appendChild(b);
+  });
+  var all = document.createElement('button');
+  all.type = 'button';
+  all.className = 'chip wide';
+  all.setAttribute('aria-pressed', store.unit === 'all' ? 'true' : 'false');
+  all.textContent = store.subject === 'both' ? '전체 5개 단원 종합 (2~3 / 2~4단원)' :
+                    (store.subject === 'social' ? '사회 2~3단원 전체 종합' : '과학 2~4단원 전체 종합');
+  all.onclick = function(){ store.unit = 'all'; renderUnitChips(); renderCountChips(); renderInfo(); };
+  box.appendChild(all);
+}
+
+function poolFor(subject, unit){
+  if(unit === 'all') return QUESTIONS.filter(function(q){ return SUBJECTS[subject].units.indexOf(q.u) >= 0; });
+  return QUESTIONS.filter(function(q){ return q.u === unit; });
+}
+
+function renderCountChips(){
+  var pool = poolFor(store.subject, store.unit);
+  var box = $('#countChips');
+  box.innerHTML = '';
+  [10,15,'all'].forEach(function(c){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.setAttribute('aria-pressed', store.count === c ? 'true' : 'false');
+    if(c === 'all'){
+      b.textContent = '전체 (' + pool.length + '문제)';
+      if(pool.length < 15) b.disabled = false;
+    } else {
+      b.textContent = c + '문제';
+      if(pool.length < c) b.innerHTML = c + '문제 <small>· ' + pool.length + '개만</small>';
+    }
+    b.onclick = function(){ store.count = c; renderCountChips(); renderInfo(); };
+    box.appendChild(b);
+  });
+}
+
+function renderInfo(){
+  var pool = poolFor(store.subject, store.unit);
+  var n = store.count === 'all' ? pool.length : Math.min(store.count, pool.length);
+  var name = store.unit === 'all'
+    ? (store.subject === 'both' ? '사회·과학 전체 단원' : (SUBJECTS[store.subject].label + ' 전체 단원'))
+    : unitShortName(store.subject, store.unit);
+  var info = $('#selInfo');
+  info.innerHTML = '선택: <b>' + esc(name) + '</b><br>이번 퀴즈 <b>' + n + '문제</b> · 문제는 매번 새로 섞여요';
+
+  var best = getBest(store.subject, store.unit, store.count);
+  var line = $('#bestLine');
+  if(best){
+    line.style.display = 'flex';
+    line.innerHTML = '🏅 최고 점수 <b>' + best.correct + ' / ' + best.total + '</b> (' + best.pct + '%)';
+  } else {
+    line.style.display = 'none';
+  }
+}
+
+/* ================= 퀴즈 시작 ================= */
+function startQuiz(list, isReview){
+  store.queue = list.map(function(q){
+    var item = {q:q, order:null};
+    if(q.t === 'mc'){
+      var idx = q.o.map(function(_,i){ return i; });
+      item.order = shuffle(idx);
+    }
+    return item;
+  });
+  store.idx = 0;
+  store.answers = [];
+  store.combo = 0;
+  store.maxCombo = 0;
+  store.review = !!isReview;
+  show('scQuiz');
+  renderQuestion();
+}
+
+function currentItem(){ return store.queue[store.idx]; }
+
+function typeLabel(t){
+  if(t === 'mc') return '4지선다';
+  if(t === 'ox') return 'O / X';
+  return '단답형';
+}
+function typeClass(t){
+  if(t === 'ox') return 'ox';
+  if(t === 'short') return 'short';
+  return '';
+}
+
+function renderQuestion(){
+  var item = currentItem();
+  var q = item.q;
+  var total = store.queue.length;
+  var n = store.idx + 1;
+
+  $('#qcount').textContent = n + ' / ' + total;
+  $('#qmode').textContent = store.review ? '틀린 문제 다시 풀기' : '단원평가';
+  $('#pbar').style.width = ((store.idx + 1) / total * 100) + '%';
+
+  var combo = $('#combo');
+  if(store.combo >= 2){
+    combo.classList.remove('off');
+    combo.textContent = '🔥 ' + store.combo + '연속';
+  } else {
+    combo.classList.add('off');
+  }
+
+  $('#qtags').innerHTML =
+    '<span class="tag">' + esc(UNITS[q.u].no + '단원 · ' + q.tag) + '</span>' +
+    '<span class="tag type ' + typeClass(q.t) + '">' + typeLabel(q.t) + '</span>';
+
+  $('#qtext').textContent = q.q;
+
+  var fb = $('#feedback');
+  fb.className = 'feedback';
+  fb.style.display = 'none';
+  $('#nextWrap').style.display = 'none';
+
+  var area = $('#answerArea');
+  area.innerHTML = '';
+
+  if(q.t === 'mc'){
+    var wrap = document.createElement('div');
+    wrap.className = 'opts';
+    item.order.forEach(function(oi, pos){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'opt';
+      b.dataset.oi = String(oi);
+      b.innerHTML = '<span class="mk">' + (pos+1) + '</span><span>' + esc(q.o[oi]) + '</span>';
+      b.onclick = function(){ answerMc(oi, b); };
+      wrap.appendChild(b);
+    });
+    area.appendChild(wrap);
+  } else if(q.t === 'ox'){
+    var row = document.createElement('div');
+    row.className = 'oxrow';
+    [['O', true], ['X', false]].forEach(function(pair){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'oxbtn';
+      b.dataset.val = pair[1] ? 'true' : 'false';
+      b.innerHTML = pair[0] + '<span>' + (pair[1] ? '맞아요' : '틀려요') + '</span>';
+      b.onclick = function(){ answerOx(pair[1], b); };
+      row.appendChild(b);
+    });
+    area.appendChild(row);
+  } else {
+    var sw = document.createElement('div');
+    sw.className = 'shortwrap';
+    var inp = document.createElement('input');
+    inp.type = 'text';
+    inp.id = 'shortInput';
+    inp.placeholder = '답을 입력하고 확인을 눌러요';
+    inp.autocomplete = 'off';
+    inp.autocapitalize = 'off';
+    inp.spellcheck = false;
+    inp.enterKeyHint = 'done';
+    inp.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); submitShort(); } });
+    sw.appendChild(inp);
+
+    if(q.hint){
+      var hb = document.createElement('button');
+      hb.type = 'button';
+      hb.className = 'minibtn';
+      hb.textContent = '💡 힌트 보기';
+      var hbox = document.createElement('div');
+      hbox.className = 'hintbox';
+      hbox.textContent = q.hint;
+      hb.onclick = function(){ hbox.classList.add('show'); hb.style.display = 'none'; };
+      sw.appendChild(hb);
+      sw.appendChild(hbox);
+    }
+
+    var sb = document.createElement('button');
+    sb.type = 'button';
+    sb.className = 'btn';
+    sb.id = 'shortSubmit';
+    sb.textContent = '정답 확인';
+    sb.onclick = submitShort;
+    sw.appendChild(sb);
+    area.appendChild(sw);
+    setTimeout(function(){ try{ inp.focus(); }catch(e){} }, 120);
+  }
+}
+
+function answerMc(oi, btn){
+  var item = currentItem();
+  var q = item.q;
+  if(item.done) return;
+  item.done = true;
+  var ok = (oi === q.a);
+  var buttons = document.querySelectorAll('#answerArea .opt');
+  buttons.forEach(function(b){
+    b.disabled = true;
+    var bo = parseInt(b.dataset.oi, 10);
+    if(bo === q.a) b.classList.add('correct');
+    else if(b === btn) b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+  finishAnswer(ok, q.o[oi], q.o[q.a]);
+}
+
+function answerOx(val, btn){
+  var item = currentItem();
+  var q = item.q;
+  if(item.done) return;
+  item.done = true;
+  var ok = (val === q.a);
+  var buttons = document.querySelectorAll('#answerArea .oxbtn');
+  buttons.forEach(function(b){
+    b.disabled = true;
+    var bv = (b.dataset.val === 'true');
+    if(bv === q.a) b.classList.add('correct');
+    else if(b === btn) b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+  finishAnswer(ok, val ? 'O' : 'X', q.a ? 'O' : 'X');
+}
+
+function submitShort(){
+  var item = currentItem();
+  var q = item.q;
+  if(item.done) return;
+  var inp = $('#shortInput');
+  var val = inp ? inp.value : '';
+  if(!val.trim()){
+    if(inp){ inp.focus(); inp.style.borderColor = '#f08a8c'; setTimeout(function(){ inp.style.borderColor = ''; }, 900); }
+    return;
+  }
+  var ok = q.a.some(function(a){ return norm(a) === norm(val); });
+  item.done = true;
+  if(inp) inp.disabled = true;
+  var sb = $('#shortSubmit');
+  if(sb) sb.style.display = 'none';
+  var hintBtn = document.querySelector('#answerArea .minibtn');
+  if(hintBtn) hintBtn.style.display = 'none';
+  finishAnswer(ok, val.trim(), q.a[0]);
+}
+
+function finishAnswer(ok, given, correctText){
+  var item = currentItem();
+  var q = item.q;
+
+  store.answers.push({q:q, ok:ok, given:given, correct:correctText});
+  if(ok){
+    store.combo += 1;
+    if(store.combo > store.maxCombo) store.maxCombo = store.combo;
+  } else {
+    store.combo = 0;
+  }
+
+  var combo = $('#combo');
+  if(store.combo >= 2){
+    combo.classList.remove('off');
+    combo.textContent = '🔥 ' + store.combo + '연속';
+  } else {
+    combo.classList.add('off');
+  }
+
+  var fb = $('#feedback');
+  fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  fb.style.display = 'block';
+  $('#fbhead').textContent = ok
+    ? (store.combo >= 3 ? '🎉 정답! ' + store.combo + '연속!' : '⭕ 정답이에요!')
+    : '❌ 아쉬워요!';
+  $('#fbsub').innerHTML = ok
+    ? '잘했어요, 연서야!'
+    : '정답은 <b>' + esc(correctText) + '</b>' + (norm(given) === norm(correctText) ? '' : ' 이에요.');
+
+  var ex = q.ex;
+  var lab = '<span class="lab">왜 그럴까요?</span>';
+  var extra = '';
+  if(ok && q.t === 'short') extra = '';
+  $('#fbex').innerHTML = lab + esc(ex) + extra;
+
+  var isLast = (store.idx === store.queue.length - 1);
+  $('#nextBtn').textContent = isLast ? '결과 보기 🎯' : '다음 문제 →';
+  $('#nextWrap').style.display = 'block';
+}
+
+function nextQuestion(){
+  if(store.idx < store.queue.length - 1){
+    store.idx += 1;
+    renderQuestion();
+  } else {
+    finishQuiz();
+  }
+}
+
+/* ================= 결과 ================= */
+function finishQuiz(){
+  var total = store.answers.length;
+  var correct = store.answers.filter(function(a){ return a.ok; }).length;
+  var pct = total ? Math.round(correct/total*100) : 0;
+  var wrong = store.answers.filter(function(a){ return !a.ok; });
+
+  var stars = pct >= 90 ? 5 : pct >= 75 ? 4 : pct >= 60 ? 3 : pct >= 40 ? 2 : 1;
+  var starStr = '';
+  for(var i=0;i<5;i++){ starStr += (i < stars ? '★' : '☆'); }
+  $('#rstars').textContent = starStr;
+  $('#rscore').innerHTML = correct + ' <small>/ ' + total + '</small>';
+  $('#rpct').textContent = '정답률 ' + pct + '%';
+  $('#stCorrect').textContent = correct;
+  $('#stCombo').textContent = store.maxCombo;
+
+  var msg;
+  if(pct === 100) msg = '🏆 완벽해! 연서야, 이 단원은 완전히 마스터했어!';
+  else if(pct >= 90) msg = '🌟 연서야 대단해! 거의 다 맞았어. 이 정도면 단원평가 준비 끝!';
+  else if(pct >= 75) msg = '👏 잘했어, 연서야! 조금만 더 다듬으면 완벽해.';
+  else if(pct >= 60) msg = '💪 좋아! 틀린 문제만 다시 풀면 금방 올라갈 거야.';
+  else if(pct >= 40) msg = '🌱 괜찮아! 해설을 읽고 틀린 문제부터 하나씩 다시 풀어 보자.';
+  else msg = '🤗 처음엔 다 그래! 해설을 천천히 읽고 다시 도전해 보자.';
+  $('#rmsg').textContent = msg;
+
+  var bestBox = $('#rbest');
+  if(!store.review){
+    var isNew = saveBest(store.subject, store.unit, store.count, correct, total);
+    var best = getBest(store.subject, store.unit, store.count);
+    bestBox.style.display = 'inline-flex';
+    bestBox.className = 'rbest' + (isNew ? ' new' : '');
+    bestBox.textContent = isNew
+      ? '🎉 최고 점수 갱신! ' + best.correct + ' / ' + best.total
+      : '🏅 최고 점수 ' + best.correct + ' / ' + best.total;
+  } else {
+    bestBox.style.display = 'none';
+  }
+
+  $('#wrongCount').textContent = wrong.length + '개';
+  var list = $('#wrongList');
+  list.innerHTML = '';
+  if(!wrong.length){
+    list.innerHTML = '<div class="empty">틀린 문제가 없어요! 완벽해요 ✨</div>';
+    $('#retryWrongBtn').disabled = true;
+    $('#retryWrongBtn').style.display = 'none';
+  } else {
+    $('#retryWrongBtn').disabled = false;
+    $('#retryWrongBtn').style.display = 'flex';
+    wrong.forEach(function(a, i){
+      var item = document.createElement('div');
+      item.className = 'witem';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.innerHTML = '<span class="wno">' + (i+1) + '</span><span class="wq">' + esc(a.q.q) + '</span><span class="arw">해설 ▾</span>';
+      btn.onclick = function(){
+        item.classList.toggle('open');
+        var arw = btn.querySelector('.arw');
+        arw.textContent = item.classList.contains('open') ? '접기 ▴' : '해설 ▾';
+      };
+      var body = document.createElement('div');
+      body.className = 'wbody';
+      body.innerHTML =
+        '<div class="wline o"><span class="k">내 답</span><span class="v">' + esc(a.given) + '</span></div>' +
+        '<div class="wline a"><span class="k">정답</span><span class="v">' + esc(a.correct) + '</span></div>' +
+        '<div class="wex">' + esc(a.q.ex) + '</div>';
+      item.appendChild(btn);
+      item.appendChild(body);
+      list.appendChild(item);
+    });
+  }
+
+  show('scResult');
+}
+
+/* ================= 버튼 연결 ================= */
+$('#startBtn').onclick = function(){
+  var pool = poolFor(store.subject, store.unit);
+  var n = store.count === 'all' ? pool.length : Math.min(store.count, pool.length);
+  var picked = shuffle(pool.slice()).slice(0, n);
+  startQuiz(picked, false);
+};
+
+$('#nextBtn').onclick = nextQuestion;
+
+$('#quitBtn').onclick = function(){ $('#quitModal').classList.add('show'); };
+$('#stayBtn').onclick = function(){ $('#quitModal').classList.remove('show'); };
+$('#leaveBtn').onclick = function(){ $('#quitModal').classList.remove('show'); show('scHome'); };
+
+$('#retryWrongBtn').onclick = function(){
+  var wrong = store.answers.filter(function(a){ return !a.ok; }).map(function(a){ return a.q; });
+  if(!wrong.length) return;
+  startQuiz(shuffle(wrong.slice()), true);
+};
+
+$('#retryAllBtn').onclick = function(){
+  var subject = store.subject, unit = store.unit, count = store.count;
+  var pool = poolFor(subject, unit);
+  var n = count === 'all' ? pool.length : Math.min(count, pool.length);
+  startQuiz(shuffle(pool.slice()).slice(0, n), false);
+};
+
+$('#homeBtn').onclick = function(){ show('scHome'); renderInfo(); };
+
+/* ================= 시작 ================= */
+renderSubjectChips();
+renderUnitChips();
+renderCountChips();
+renderInfo();
+</script>
+</body>
+</html>
