@@ -809,6 +809,7 @@ function show(id){
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
+  setTimeout(function(){ window.scrollTo(0,0); }, 60);
 }
 function shuffle(a){
   for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
@@ -838,13 +839,14 @@ function saveBest(subject, unit, count, correct, total){
   var k = bestKey(subject, unit, count);
   var pct = total ? Math.round(correct/total*100) : 0;
   var prev = all[k];
-  var isNew = false;
-  if(!prev || pct > prev.pct || (pct === prev.pct && total > prev.total)){
+  var result = false;
+  if(!prev) result = 'first';
+  else if(pct > prev.pct || (pct === prev.pct && total > prev.total)) result = 'new';
+  if(result){
     all[k] = {correct:correct, total:total, pct:pct, ts:Date.now()};
     try { localStorage.setItem(BEST_KEY, JSON.stringify(all)); } catch(e){}
-    isNew = true;
   }
-  return isNew;
+  return result;
 }
 
 /* ================= 홈 화면 ================= */
@@ -857,8 +859,8 @@ function unitLabel(subject, uid){
 }
 function unitShortName(subject, uid){
   var u = UNITS[uid];
-  if(subject === 'both') return (u.sub === 'social' ? '사회 ' : '과학 ') + u.name;
-  return u.name;
+  if(subject === 'both') return (u.sub === 'social' ? '사회 ' : '과학 ') + u.no + '단원 · ' + u.name;
+  return u.no + '단원 · ' + u.name;
 }
 
 function renderSubjectChips(){
@@ -997,10 +999,14 @@ function renderQuestion(){
     combo.textContent = '🔥 ' + store.combo + '연속';
   } else {
     combo.classList.add('off');
+    combo.textContent = '';
   }
 
+  var unitPrefix = (store.subject === 'both')
+    ? ((UNITS[q.u].sub === 'social' ? '사회 ' : '과학 ') + UNITS[q.u].no + '단원')
+    : (UNITS[q.u].no + '단원');
   $('#qtags').innerHTML =
-    '<span class="tag">' + esc(UNITS[q.u].no + '단원 · ' + q.tag) + '</span>' +
+    '<span class="tag">' + esc(unitPrefix + ' · ' + q.tag) + '</span>' +
     '<span class="tag type ' + typeClass(q.t) + '">' + typeLabel(q.t) + '</span>';
 
   $('#qtext').textContent = q.q;
@@ -1050,6 +1056,7 @@ function renderQuestion(){
     inp.autocapitalize = 'off';
     inp.spellcheck = false;
     inp.enterKeyHint = 'done';
+    inp.setAttribute('aria-label', '답 입력');
     inp.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); submitShort(); } });
     sw.appendChild(inp);
 
@@ -1150,6 +1157,7 @@ function finishAnswer(ok, given, correctText){
     combo.textContent = '🔥 ' + store.combo + '연속';
   } else {
     combo.classList.add('off');
+    combo.textContent = '';
   }
 
   var fb = $('#feedback');
@@ -1160,7 +1168,7 @@ function finishAnswer(ok, given, correctText){
     : '❌ 아쉬워요!';
   $('#fbsub').innerHTML = ok
     ? '잘했어요, 연서야!'
-    : '정답은 <b>' + esc(correctText) + '</b>' + (norm(given) === norm(correctText) ? '' : ' 이에요.');
+    : '정답은 <b>' + esc(correctText) + '</b>';
 
   var ex = q.ex;
   var lab = '<span class="lab">왜 그럴까요?</span>';
@@ -1209,13 +1217,15 @@ function finishQuiz(){
 
   var bestBox = $('#rbest');
   if(!store.review){
-    var isNew = saveBest(store.subject, store.unit, store.count, correct, total);
+    var saved = saveBest(store.subject, store.unit, store.count, correct, total);
     var best = getBest(store.subject, store.unit, store.count);
     bestBox.style.display = 'inline-flex';
-    bestBox.className = 'rbest' + (isNew ? ' new' : '');
-    bestBox.textContent = isNew
-      ? '🎉 최고 점수 갱신! ' + best.correct + ' / ' + best.total
-      : '🏅 최고 점수 ' + best.correct + ' / ' + best.total;
+    bestBox.className = 'rbest' + (saved ? ' new' : '');
+    bestBox.textContent = saved === 'first'
+      ? '🏅 첫 기록! ' + best.correct + ' / ' + best.total
+      : (saved === 'new'
+        ? '🎉 최고 점수 갱신! ' + best.correct + ' / ' + best.total
+        : '🏅 최고 점수 ' + best.correct + ' / ' + best.total);
   } else {
     bestBox.style.display = 'none';
   }
